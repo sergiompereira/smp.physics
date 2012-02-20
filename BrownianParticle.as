@@ -18,27 +18,16 @@ package srg.physics{
 		public var vy:Number=0;
 		public var friction:Number=0.97;
 		public var bounds:Rectangle;
-		public var impulseDelayInterval:Array;
-		public var speedMax:Number;
+		public var speedChange:Number = 1;
 		
 		private var _timer:Timer;
 		
-		public function BrownianParticle(bounds:Rectangle = null, impulseDelayInterval:Array = null, friction:Number = 0.97, speedMax:Number = 1 ){
+		public function BrownianParticle(bounds:Rectangle = null){
 			
 			this.bounds = bounds;
-			
-			this.impulseDelayInterval = impulseDelayInterval;
-			if(this.impulseDelayInterval == null){
-				this.impulseDelayInterval = new Array(1000,2000);
-			}
-			this.friction = friction;
-			this.speedMax = speedMax;
-			
 	        
 	        createView();
 	        setUpdateInterval();
-	        
-	        onTimer();
 	       
 		}
 		
@@ -48,7 +37,7 @@ package srg.physics{
 		
 		protected function setUpdateInterval():void
 		{
-			_timer = new Timer(Math.random()*impulseDelayInterval[0]+(impulseDelayInterval[1]-impulseDelayInterval[0]));
+			_timer = new Timer(Math.random()*1000+1000);
 			_timer.addEventListener(TimerEvent.TIMER, onTimer);
 			_timer.start();
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -56,10 +45,10 @@ package srg.physics{
 			update();
 		}
 		
-		private function onTimer(evt:TimerEvent = null):void{
+		private function onTimer(evt:TimerEvent):void{
 			
-		   vx +=  NumberUtilities.random(-speedMax, speedMax);
-		   vy +=  NumberUtilities.random(-speedMax, speedMax);
+		   vx +=  NumberUtilities.random(-speedChange, speedChange);
+		   vy +=  NumberUtilities.random(-speedChange, speedChange);
 		}
 		
 		private function onEnterFrame(evt:Event):void
